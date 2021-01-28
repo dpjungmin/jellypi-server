@@ -7,10 +7,16 @@ require (
 	github.com/arsmn/fiber-swagger/v2 v2.3.0
 	github.com/go-openapi/spec v0.20.1 // indirect
 	github.com/go-openapi/swag v0.19.13 // indirect
+	github.com/go-playground/universal-translator v0.17.0 // indirect
+	github.com/go-playground/validator v9.31.0+incompatible
+	github.com/gofiber/fiber v1.14.6
 	github.com/gofiber/fiber/v2 v2.3.3
 	github.com/klauspost/compress v1.11.7 // indirect
+	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/swaggo/swag v1.7.0
 	github.com/valyala/fasthttp v1.19.0 // indirect
+	go.uber.org/multierr v1.6.0 // indirect
+	go.uber.org/zap v1.16.0
 	golang.org/x/net v0.0.0-20210119194325-5f4716e94777 // indirect
 	golang.org/x/sys v0.0.0-20210122093101-04d7465088b8 // indirect
 	golang.org/x/text v0.3.5 // indirect

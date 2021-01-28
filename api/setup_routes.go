@@ -2,28 +2,57 @@ package api
 
 import (
 	swagger "github.com/arsmn/fiber-swagger/v2"
+	"github.com/dpjungmin/jellypi-server/database"
+	h "github.com/dpjungmin/jellypi-server/handlers"
+	r "github.com/dpjungmin/jellypi-server/repositories"
+	s "github.com/dpjungmin/jellypi-server/services"
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
-// SetupRoutes Map routes with their corresponding handlers.
+var (
+	db *gorm.DB
+
+	// Repositories
+	userRepo r.UserRepository
+
+	// Services
+	userService s.UserService
+
+	// Handlers
+	userHandler h.UserHandler
+)
+
+func initialize() {
+	// The `database.Connect()` function must have been callen
+	db = database.DB
+
+	// Repositories
+	userRepo = r.NewUserRepository(db)
+
+	// Services
+	userService = s.NewUserService(userRepo)
+
+	// Handlers
+	userHandler = h.NewUserHandler(userService)
+}
+
+// SetupRoutes will map each route with their corresponding handler
 func SetupRoutes(app *fiber.App) {
+	initialize()
+
+	app.Get("", hello)
+	app.Get("/swagger/*", swagger.Handler)
 	api := app.Group("/api")
 	{
-		v1 := api.Group("/v1", func(c *fiber.Ctx) error {
-			c.JSON(fiber.Map{
-				"message": "v1",
-			})
-			return c.Next()
-		})
+		users := api.Group("/users")
 		{
-			v1.Get("/hello", func(c *fiber.Ctx) error {
-				return c.SendString("Hello, World!")
-			})
-
-			v1.Get("/panic", func(c *fiber.Ctx) error {
-				panic("this panic is catched by fiber")
-			})
+			users.Get("", userHandler.GetUser)
+			users.Post("", userHandler.CreateUser)
 		}
-		app.Get("/swagger/*", swagger.Handler)
 	}
+}
+
+func hello(c *fiber.Ctx) error {
+	return c.SendString("Hello 👻")
 }
