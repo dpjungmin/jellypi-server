@@ -6,9 +6,11 @@ import (
 	_ "github.com/dpjungmin/jellypi-server/docs"
 )
 
-func main() {
+func init() {
 	db.Connect()
 	db.AutoMigrate()
+}
 
+func main() {
 	api.StartApplication()
 }

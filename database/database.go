@@ -1,7 +1,7 @@
 package database
 
 import (
-	"github.com/dpjungmin/jellypi-server/entities"
+	e "github.com/dpjungmin/jellypi-server/entity"
 	"github.com/dpjungmin/jellypi-server/tools/logger"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -31,7 +31,7 @@ func Connect() {
 	logger.Info("Database connected")
 }
 
-// Close the database connection
+// Close closes the database connection
 func Close() {
 	DB.Statement.ReflectValue.Close()
 }
@@ -40,7 +40,7 @@ func Close() {
 func AutoMigrate() {
 	var tables []interface{}
 
-	tables = append(tables, &entities.User{})
+	tables = append(tables, &e.User{})
 
 	if err := autoMigrate(tables...); err != nil {
 		logger.Error("[DATABASE]::MIGRATION_ERROR", err)

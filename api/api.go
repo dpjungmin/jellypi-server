@@ -10,17 +10,23 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// StartApplication will start listening for incomming requests
-func StartApplication() {
+func initializeApp() *fiber.App {
 	app := fiber.New(fiber.Config{
 		ServerHeader:  "JellyPi",
 		StrictRouting: true,
 		CaseSensitive: true,
 	})
-
 	ApplyMiddlewares(app)
 	SetupRoutes(app)
+	return app
+}
 
+// StartApplication will start listening for incomming requests
+func StartApplication() {
+	// Initialize app
+	app := initializeApp()
+
+	// Start listening on a different goroutine
 	go func() {
 		logger.Error("Application is shutting down", app.Listen(":5000"))
 		os.Exit(1)

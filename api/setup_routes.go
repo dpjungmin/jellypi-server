@@ -3,9 +3,9 @@ package api
 import (
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/dpjungmin/jellypi-server/database"
-	h "github.com/dpjungmin/jellypi-server/handlers"
-	r "github.com/dpjungmin/jellypi-server/repositories"
-	s "github.com/dpjungmin/jellypi-server/services"
+	h "github.com/dpjungmin/jellypi-server/handler"
+	r "github.com/dpjungmin/jellypi-server/repository"
+	s "github.com/dpjungmin/jellypi-server/service"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
@@ -23,7 +23,7 @@ var (
 	userHandler h.UserHandler
 )
 
-func initialize() {
+func initializeResources() {
 	// The `database.Connect()` function must have been callen
 	db = database.DB
 
@@ -39,7 +39,7 @@ func initialize() {
 
 // SetupRoutes will map each route with their corresponding handler
 func SetupRoutes(app *fiber.App) {
-	initialize()
+	initializeResources()
 
 	app.Get("", hello)
 	app.Get("/swagger/*", swagger.Handler)

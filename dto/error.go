@@ -1,4 +1,4 @@
-package dtos
+package dto
 
 import (
 	"github.com/dpjungmin/jellypi-server/tools"

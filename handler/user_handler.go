@@ -1,8 +1,8 @@
-package handlers
+package handler
 
 import (
-	"github.com/dpjungmin/jellypi-server/dtos"
-	"github.com/dpjungmin/jellypi-server/services"
+	d "github.com/dpjungmin/jellypi-server/dto"
+	s "github.com/dpjungmin/jellypi-server/service"
 	"github.com/dpjungmin/jellypi-server/tools/logger"
 	"github.com/gofiber/fiber/v2"
 )
@@ -15,7 +15,7 @@ type IUserHandler interface {
 
 // UserHandler structure
 type UserHandler struct {
-	s services.UserService
+	s s.UserService
 }
 
 // GetUser handler
@@ -30,20 +30,20 @@ func (h *UserHandler) GetUser(c *fiber.Ctx) error {
 // CreateUser handler
 func (h *UserHandler) CreateUser(c *fiber.Ctx) error {
 	// Parse body
-	dto := new(dtos.CreateUserRequest)
+	dto := new(d.CreateUserRequest)
 	if err := c.BodyParser(dto); err != nil {
 		return err
 	}
 	// Create user
 	u, err := h.s.CreateUser(dto)
 	if err != nil {
-		return c.Status(err.Code).JSON(dtos.NewErrorResponse(err.Code, err.Message))
+		return c.Status(err.Code).JSON(d.NewErrorResponse(err.Code, err.Message))
 	}
 	// Send response
 	return c.Status(fiber.StatusCreated).JSON(u)
 }
 
 // NewUserHandler creates a new user handler
-func NewUserHandler(s services.UserService) UserHandler {
+func NewUserHandler(s s.UserService) UserHandler {
 	return UserHandler{s}
 }
