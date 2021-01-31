@@ -19,7 +19,7 @@ func (e *Error) Error() string {
 	return e.Message
 }
 
-// NewError creates a new Error instance with an optional message
+// NewError generates a new Error instance with an optional message
 func NewError(code int, msg ...string) *Error {
 	e := &Error{
 		Code: code,
@@ -32,7 +32,7 @@ func NewError(code int, msg ...string) *Error {
 	return e
 }
 
-// NewErrorResponse creates a new ErrorResponse instance with an optional message
+// NewErrorResponse generates a new ErrorResponse instance with an optional message
 func NewErrorResponse(code int, msg ...string) *ErrorResponse {
 	return &ErrorResponse{
 		Error: *NewError(code, msg...),

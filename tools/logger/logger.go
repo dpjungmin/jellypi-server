@@ -10,6 +10,8 @@ import (
 var log *zap.Logger
 
 func init() {
+	var err error
+
 	cfg := zap.Config{
 		Level:            zap.NewAtomicLevelAt(zap.InfoLevel),
 		Encoding:         zap.NewProductionConfig().Encoding,
@@ -25,7 +27,7 @@ func init() {
 			EncodeCaller: zapcore.ShortCallerEncoder,
 		},
 	}
-	var err error
+
 	if log, err = cfg.Build(zap.AddCallerSkip(1)); err != nil {
 		panic(err)
 	}

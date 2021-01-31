@@ -18,13 +18,13 @@ func GetMIME(extension string) (mime string) {
 	return mime
 }
 
-// limits for HTTP statuscodes
+// limits for HTTP status codes
 const (
 	statusMessageMin = 100
 	statusMessageMax = 511
 )
 
-// StatusMessage returns the correct message for the provided HTTP statuscode
+// StatusMessage returns the correct message for the provided HTTP status code
 func StatusMessage(status int) string {
 	if status < statusMessageMin || status > statusMessageMax {
 		return ""

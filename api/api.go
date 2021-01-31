@@ -5,7 +5,6 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/dpjungmin/jellypi-server/database"
 	"github.com/dpjungmin/jellypi-server/tools/logger"
 	"github.com/gofiber/fiber/v2"
 )
@@ -21,9 +20,8 @@ func initializeApp() *fiber.App {
 	return app
 }
 
-// StartApplication will start listening for incomming requests
-func StartApplication() {
-	// Initialize app
+// Start will start listening for incomming requests
+func Start() {
 	app := initializeApp()
 
 	// Start listening on a different goroutine
@@ -46,6 +44,4 @@ func StartApplication() {
 	cleanup()
 }
 
-func cleanup() {
-	database.Close()
-}
+func cleanup() {}
