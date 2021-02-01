@@ -1,7 +1,7 @@
 package main
 
 import (
-	app "github.com/dpjungmin/jellypi-server/api"
+	"github.com/dpjungmin/jellypi-server/api"
 	db "github.com/dpjungmin/jellypi-server/database"
 	_ "github.com/dpjungmin/jellypi-server/docs"
 )
@@ -11,5 +11,5 @@ func init() {
 }
 
 func main() {
-	app.Start()
+	api.Start()
 }

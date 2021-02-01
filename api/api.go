@@ -5,45 +5,44 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/dpjungmin/jellypi-server/tools/logger"
-	"github.com/gofiber/fiber/v2"
+	"github.com/dpjungmin/jellypi-server/utils/logger"
 )
 
-func initializeApp() *fiber.App {
-	app := fiber.New(fiber.Config{
-		ServerHeader:  "JellyPi",
-		StrictRouting: true,
-		CaseSensitive: true,
-	})
-	ApplyMiddlewares(app)
-	SetupRoutes(app)
-	return app
+// App defines the interface for an application
+type App interface {
+	Shutdown() error
 }
 
 // Start will start listening for incomming requests
 func Start() {
-	app := initializeApp()
+	logger.Info("Application is starting up...")
+	app := Bootstrap()
 
 	// Start listening on a different goroutine
 	go func() {
 		if err := app.Listen(":5000"); err != nil {
-			logger.Error("Application is shutting down", err)
+			logger.Error("Application listen error", err)
 			os.Exit(1)
 		}
 	}()
 
-	logger.Info("Application is starting up")
+	handleGracefulShutdown(app)
+}
 
+func handleGracefulShutdown(app App) {
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 
 	// Block the main thread until an interrupt is received
 	_ = <-c
+
 	logger.Info("Gracefully shutting down...")
 	_ = app.Shutdown()
+	logger.Info("Application is down")
 
-	logger.Info("Running cleanup tasks...")
 	cleanup()
 }
 
-func cleanup() {}
+func cleanup() {
+	logger.Info("Running cleanup tasks...")
+}

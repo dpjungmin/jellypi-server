@@ -3,8 +3,8 @@ package database
 import (
 	"sync"
 
-	"github.com/dpjungmin/jellypi-server/entity"
-	"github.com/dpjungmin/jellypi-server/tools/logger"
+	"github.com/dpjungmin/jellypi-server/domain"
+	"github.com/dpjungmin/jellypi-server/utils/logger"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
@@ -55,7 +55,7 @@ func (db *PG) Client() *gorm.DB {
 // AutoMigrate will migrate all the database tables that are provided
 func (db *PG) AutoMigrate() {
 	tables := []interface{}{
-		&entity.User{},
+		&domain.User{},
 	}
 
 	if err := db.client.AutoMigrate(tables...); err != nil {

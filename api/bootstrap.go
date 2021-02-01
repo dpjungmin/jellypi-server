@@ -7,9 +7,19 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/recover"
 )
 
-// ApplyMiddlewares will apply all necessary middlewares
-func ApplyMiddlewares(app *fiber.App) {
+// Bootstrap will initialize the fiber application
+func Bootstrap() *fiber.App {
+	app := fiber.New(fiber.Config{
+		ServerHeader:  "JellyPi",
+		StrictRouting: true,
+		CaseSensitive: true,
+	})
+
 	app.Use(recover.New())
 	app.Use(logger.New())
 	app.Use(cors.New())
+
+	SetupRoutes(app)
+
+	return app
 }

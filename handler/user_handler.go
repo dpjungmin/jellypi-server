@@ -4,33 +4,22 @@ import (
 	"net/http"
 
 	"github.com/dpjungmin/jellypi-server/dto"
-	srv "github.com/dpjungmin/jellypi-server/service"
-	"github.com/dpjungmin/jellypi-server/tools/logger"
+	"github.com/dpjungmin/jellypi-server/service"
 	"github.com/gofiber/fiber/v2"
 )
 
 // UserHandler defines all user related handlers
 type UserHandler interface {
-	GetUser(*fiber.Ctx) error
 	CreateUser(*fiber.Ctx) error
 }
 
 type userHandler struct {
-	userSrv srv.UserService
+	userSrv service.UserService
 }
 
 // NewUserHandler generates a new user handler
-func NewUserHandler(userSrv srv.UserService) UserHandler {
+func NewUserHandler(userSrv service.UserService) UserHandler {
 	return &userHandler{userSrv}
-}
-
-// GetUser handler
-func (h *userHandler) GetUser(c *fiber.Ctx) error {
-	user, err := h.userSrv.GetUser("userID") // fake id
-	if err != nil {
-		logger.Error("Failed to get user", err)
-	}
-	return c.JSON(user)
 }
 
 // CreateUser handler

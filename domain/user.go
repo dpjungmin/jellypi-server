@@ -1,10 +1,10 @@
-package entity
+package domain
 
 import (
 	"errors"
 	"time"
 
-	"github.com/dpjungmin/jellypi-server/tools"
+	"github.com/dpjungmin/jellypi-server/utils"
 )
 
 // User entity
@@ -35,7 +35,7 @@ func (e *User) Validate() error {
 
 	if e.Email == "" {
 		return errors.New("email is required")
-	} else if !tools.EmailRegex.MatchString(e.Email) {
+	} else if !utils.EmailRegex.MatchString(e.Email) {
 		return errors.New("invalid email format")
 	}
 

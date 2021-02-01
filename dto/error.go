@@ -1,5 +1,7 @@
 package dto
 
+import "github.com/gofiber/fiber/v2"
+
 // Errors represents a stack of error messages
 type Errors []interface{}
 
@@ -8,6 +10,11 @@ type Error struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
 	Errors  Errors `json:"errors,omitempty"`
+}
+
+// ErrorResponse is the formated error response
+type ErrorResponse struct {
+	Error Error `json:"error"`
 }
 
 func (e *Error) Error() string {
@@ -36,4 +43,15 @@ func NewErrorWithStack(code int, stack Errors, msg ...string) *Error {
 	e.Errors = stack
 
 	return e
+}
+
+// NewErrorResponse generates a new ErrorResponse instance with an optional message
+func NewErrorResponse(c *fiber.Ctx, e *Error) error {
+	return c.Status(e.Code).JSON(&ErrorResponse{
+		Error: Error{
+			Code:    e.Code,
+			Message: e.Message,
+			Errors:  e.Errors,
+		},
+	})
 }

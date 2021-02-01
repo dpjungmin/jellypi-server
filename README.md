@@ -1,8 +1,9 @@
 # JellyPi server
 
-## Validation
+## Design
 
-Validation is done at the DTO level and the database level.
+- Applied Hexagonal Architecture
+- Data validation is done at three points (DTO, Entity, and Database level)
 
 ## Reference
 

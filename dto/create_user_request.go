@@ -1,7 +1,7 @@
 package dto
 
 import (
-	"github.com/dpjungmin/jellypi-server/tools"
+	"github.com/dpjungmin/jellypi-server/utils"
 )
 
 // CreateUserRequest DTO
@@ -29,7 +29,7 @@ func (dto *CreateUserRequest) Validate() Errors {
 
 	if dto.Email == "" {
 		errs = append(errs, "email is required")
-	} else if !tools.EmailRegex.MatchString(dto.Email) {
+	} else if !utils.EmailRegex.MatchString(dto.Email) {
 		errs = append(errs, "invalid email format")
 	}
 
