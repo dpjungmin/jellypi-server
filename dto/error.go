@@ -1,18 +1,13 @@
 package dto
 
-import (
-	"github.com/dpjungmin/jellypi-server/tools"
-)
+// Errors represents a stack of error messages
+type Errors []interface{}
 
-// Error represents an error that occurred while handling a request.
+// Error represents an error that occurred while handling a request
 type Error struct {
-	Code    int    `json:"code,omitempty"`
+	Code    int    `json:"code"`
 	Message string `json:"message"`
-}
-
-// ErrorResponse is the formated error response
-type ErrorResponse struct {
-	Error Error `json:"error"`
+	Errors  Errors `json:"errors,omitempty"`
 }
 
 func (e *Error) Error() string {
@@ -24,17 +19,21 @@ func NewError(code int, msg ...string) *Error {
 	e := &Error{
 		Code: code,
 	}
-	if len(msg) > 0 {
-		e.Message = msg[0]
-	} else {
-		e.Message = tools.StatusMessage(code)
+
+	if len(msg) == 0 {
+		e.Message = DefaultStatusMessage(code)
+		return e
 	}
+
+	e.Message = msg[0]
 	return e
 }
 
-// NewErrorResponse generates a new ErrorResponse instance with an optional message
-func NewErrorResponse(code int, msg ...string) *ErrorResponse {
-	return &ErrorResponse{
-		Error: *NewError(code, msg...),
-	}
+// NewErrorWithStack generates a new Error instance with an error stack and optional message
+func NewErrorWithStack(code int, stack Errors, msg ...string) *Error {
+	e := NewError(code, msg...)
+
+	e.Errors = stack
+
+	return e
 }

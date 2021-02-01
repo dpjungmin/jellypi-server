@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"net/http"
+
 	"github.com/dpjungmin/jellypi-server/dto"
 	srv "github.com/dpjungmin/jellypi-server/service"
 	"github.com/dpjungmin/jellypi-server/tools/logger"
@@ -41,8 +43,8 @@ func (h *userHandler) CreateUser(c *fiber.Ctx) error {
 	// Create user
 	u, err := h.userSrv.CreateUser(d)
 	if err != nil {
-		return c.Status(err.Code).JSON(dto.NewErrorResponse(err.Code, err.Message))
+		return dto.NewErrorResponse(c, err)
 	}
 	// Send response
-	return c.Status(fiber.StatusCreated).JSON(u)
+	return c.Status(http.StatusCreated).JSON(u)
 }

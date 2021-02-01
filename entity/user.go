@@ -15,29 +15,27 @@ type User struct {
 
 	Username   string `json:"username" gorm:"type:varchar(55); unique; not null"`
 	Password   string `json:"-" gorm:"type:text; not null"`
-	Email      string `json:"email" gorm:"type:varchar(50); unique; not null"`
-	IsVerifeid bool   `json:"is_verified" gorm:"type:boolean; default:false; not null"`
+	Email      string `json:"email" gorm:"type:varchar(55); unique; not null"`
+	IsVerified bool   `json:"is_verified" gorm:"type:boolean; default:false; not null"`
 }
 
-// Validate structure
+// Validate validates the entity
 func (e *User) Validate() error {
 	if e.Username == "" {
 		return errors.New("username is required")
-	}
-
-	if len(e.Username) < 3 || len(e.Username) > 55 {
-		return errors.New("username must be between 3 to 55 characters")
+	} else if len(e.Username) < 3 || len(e.Username) > 55 {
+		return errors.New("username must be at between 3 to 55 characters")
 	}
 
 	if e.Password == "" {
 		return errors.New("password is required")
+	} else if len(e.Password) < 6 {
+		return errors.New("password must be at least 6 characters")
 	}
 
 	if e.Email == "" {
 		return errors.New("email is required")
-	}
-
-	if !tools.EmailRegex.MatchString(e.Email) {
+	} else if !tools.EmailRegex.MatchString(e.Email) {
 		return errors.New("invalid email format")
 	}
 

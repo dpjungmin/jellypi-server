@@ -1,10 +1,11 @@
 package service
 
 import (
+	"net/http"
+
 	"github.com/dpjungmin/jellypi-server/dto"
 	"github.com/dpjungmin/jellypi-server/entity"
 	repo "github.com/dpjungmin/jellypi-server/repository"
-	"github.com/gofiber/fiber/v2"
 )
 
 // UserService defines all user related services
@@ -29,18 +30,18 @@ func (s *userService) GetUser(userID string) (*entity.User, error) {
 // CreateUser creates a new user
 func (s *userService) CreateUser(d *dto.CreateUserRequest) (*entity.User, *dto.Error) {
 	// Validate DTO
-	if err := d.Validate(); err != nil {
-		return nil, dto.NewError(fiber.StatusBadRequest, err.Error())
+	if errs := d.Validate(); errs != nil {
+		return nil, dto.NewErrorWithStack(http.StatusBadRequest, errs, "Request body validation error")
 	}
-	// Create user entity
+	// Create new user entity
 	u := &entity.User{
 		Username: d.Username,
 		Email:    d.Email,
 		Password: d.Password,
 	}
-	// Validate user entity
+	// Validate entity
 	if err := u.Validate(); err != nil {
-		return nil, dto.NewError(fiber.StatusBadRequest, err.Error())
+		return nil, dto.NewError(http.StatusBadRequest, err.Error())
 	}
 	// Create new user
 	return s.userRepo.Create(u)

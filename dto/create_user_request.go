@@ -1,8 +1,6 @@
 package dto
 
 import (
-	"errors"
-
 	"github.com/dpjungmin/jellypi-server/tools"
 )
 
@@ -14,30 +12,26 @@ type CreateUserRequest struct {
 }
 
 // Validate structure
-func (dto *CreateUserRequest) Validate() error {
-	if dto.Username == "" {
-		return errors.New("username is required")
-	}
+func (dto *CreateUserRequest) Validate() Errors {
+	var errs Errors
 
-	if len(dto.Username) < 3 || len(dto.Username) > 55 {
-		return errors.New("username must be at between 3 to 55 characters")
+	if dto.Username == "" {
+		errs = append(errs, "username is required")
+	} else if len(dto.Username) < 3 || len(dto.Username) > 55 {
+		errs = append(errs, "username must be at between 3 to 55 characters")
 	}
 
 	if dto.Password == "" {
-		return errors.New("password is required")
-	}
-
-	if len(dto.Password) < 6 {
-		return errors.New("password must be at least 6 characters")
+		errs = append(errs, "password is required")
+	} else if len(dto.Password) < 6 {
+		errs = append(errs, "password must be at least 6 characters")
 	}
 
 	if dto.Email == "" {
-		return errors.New("email is required")
+		errs = append(errs, "email is required")
+	} else if !tools.EmailRegex.MatchString(dto.Email) {
+		errs = append(errs, "invalid email format")
 	}
 
-	if !tools.EmailRegex.MatchString(dto.Email) {
-		return errors.New("invalid email format")
-	}
-
-	return nil
+	return errs
 }
