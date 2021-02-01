@@ -64,6 +64,6 @@ func Fatal(msg string, fields ...zap.Field) {
 // Error log
 func Error(msg string, err error, fields ...zap.Field) {
 	defer log.Sync()
-	msg = fmt.Sprintf("%s - %v", msg, err)
+	msg = fmt.Sprintf("%s::%v", msg, err)
 	log.Error(msg, fields...)
 }

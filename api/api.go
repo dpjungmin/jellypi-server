@@ -26,8 +26,10 @@ func Start() {
 
 	// Start listening on a different goroutine
 	go func() {
-		logger.Error("Application is shutting down", app.Listen(":5000"))
-		os.Exit(1)
+		if err := app.Listen(":5000"); err != nil {
+			logger.Error("Application is shutting down", err)
+			os.Exit(1)
+		}
 	}()
 
 	logger.Info("Application is starting up")
