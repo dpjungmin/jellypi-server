@@ -3,7 +3,7 @@
 ## Design
 
 - Applied Hexagonal Architecture
-- Data validation is done at three points (DTO, Entity, and Database level)
+- Data validation is done at the DTO, Domain, and Database level
 
 ## Reference
 

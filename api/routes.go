@@ -3,6 +3,9 @@ package api
 import (
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	db "github.com/dpjungmin/jellypi-server/database"
+
+	// swagger docs
+	_ "github.com/dpjungmin/jellypi-server/docs"
 	d "github.com/dpjungmin/jellypi-server/domain"
 	h "github.com/dpjungmin/jellypi-server/handler"
 	s "github.com/dpjungmin/jellypi-server/service"

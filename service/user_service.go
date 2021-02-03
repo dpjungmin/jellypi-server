@@ -7,13 +7,16 @@ import (
 	"github.com/dpjungmin/jellypi-server/dto"
 )
 
-// UserService defines all user related services
-type UserService interface {
-	CreateUser(*dto.CreateUserRequest) (*domain.User, *dto.Error)
-}
-type userService struct {
-	userRepo domain.UserRepository
-}
+type (
+	// UserService defines all user related services
+	UserService interface {
+		CreateUser(*dto.CreateUserRequest) (*domain.User, *dto.Error)
+	}
+
+	userService struct {
+		userRepo domain.UserRepository
+	}
+)
 
 // NewUserService generates a new user service
 func NewUserService(userRepo domain.UserRepository) UserService {

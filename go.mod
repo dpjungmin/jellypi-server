@@ -9,6 +9,8 @@ require (
 	github.com/go-openapi/swag v0.19.13 // indirect
 	github.com/gofiber/fiber/v2 v2.3.3
 	github.com/klauspost/compress v1.11.7 // indirect
+	github.com/prometheus/client_golang v1.9.0
+	github.com/spf13/viper v1.7.1 // indirect
 	github.com/swaggo/swag v1.7.0
 	github.com/valyala/fasthttp v1.19.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect

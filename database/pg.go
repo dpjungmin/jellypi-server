@@ -1,8 +1,10 @@
 package database
 
 import (
+	"fmt"
 	"sync"
 
+	"github.com/dpjungmin/jellypi-server/config"
 	"github.com/dpjungmin/jellypi-server/domain"
 	"github.com/dpjungmin/jellypi-server/utils/logger"
 	"gorm.io/driver/postgres"
@@ -35,7 +37,13 @@ func connect() *gorm.DB {
 		},
 	}
 
-	dsn := "host=localhost user=horimz password=passwd dbname=jellypi port=5432 sslmode=disable TimeZone=Asia/Seoul"
+	host := config.PG.Host
+	user := config.PG.User
+	pass := config.PG.Password
+	dbName := config.PG.DBName
+	port := config.PG.Port
+
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Seoul", host, user, pass, dbName, port)
 	db, err := gorm.Open(postgres.Open(dsn), cfg)
 
 	if err != nil {

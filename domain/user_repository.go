@@ -8,14 +8,16 @@ import (
 	"gorm.io/gorm"
 )
 
-// UserRepository defines all data accessing methods
-type UserRepository interface {
-	Create(*User) (*User, *dto.Error)
-}
+type (
+	// UserRepository defines all data accessing methods
+	UserRepository interface {
+		Create(*User) (*User, *dto.Error)
+	}
 
-type userRepository struct {
-	db *gorm.DB
-}
+	userRepository struct {
+		db *gorm.DB
+	}
+)
 
 // NewUserRepository generates a new user repository
 func NewUserRepository(db *gorm.DB) UserRepository {

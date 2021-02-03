@@ -1,6 +1,8 @@
 package api
 
 import (
+	"time"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -13,6 +15,7 @@ func Bootstrap() *fiber.App {
 		ServerHeader:  "JellyPi",
 		StrictRouting: true,
 		CaseSensitive: true,
+		ReadTimeout:   time.Second * 5,
 	})
 
 	app.Use(recover.New())
@@ -22,4 +25,10 @@ func Bootstrap() *fiber.App {
 	SetupRoutes(app)
 
 	return app
+}
+
+func applyMiddlewares(app *fiber.App, mws ...func(*fiber.Ctx) error) {
+	for _, md := range mws {
+		app.Use(md)
+	}
 }

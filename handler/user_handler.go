@@ -8,14 +8,16 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// UserHandler defines all user related handlers
-type UserHandler interface {
-	CreateUser(*fiber.Ctx) error
-}
+type (
+	// UserHandler defines all user related handlers
+	UserHandler interface {
+		CreateUser(*fiber.Ctx) error
+	}
 
-type userHandler struct {
-	userSrv service.UserService
-}
+	userHandler struct {
+		userSrv service.UserService
+	}
+)
 
 // NewUserHandler generates a new user handler
 func NewUserHandler(userSrv service.UserService) UserHandler {
