@@ -3,12 +3,14 @@ package api
 import (
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	db "github.com/dpjungmin/jellypi-server/database"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	// swagger docs
 	_ "github.com/dpjungmin/jellypi-server/docs"
 	d "github.com/dpjungmin/jellypi-server/domain"
 	h "github.com/dpjungmin/jellypi-server/handler"
 	s "github.com/dpjungmin/jellypi-server/service"
+	"github.com/gofiber/adaptor/v2"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -29,6 +31,7 @@ var (
 func SetupRoutes(app *fiber.App) {
 	app.Get("/health", health)
 	app.Get("/swagger/*", swagger.Handler)
+	app.Get("/metrics", adaptor.HTTPHandler(promhttp.Handler()))
 
 	api := app.Group("/api")
 	{
