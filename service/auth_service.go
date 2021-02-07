@@ -10,7 +10,7 @@ import (
 type (
 	// AuthService defines all auth related services
 	AuthService interface {
-		Login(*dto.LoginRequest) (*dto.Token, *dto.Error)
+		Login(*dto.LoginRequest) (*string, *dto.Error)
 	}
 
 	authService struct {
@@ -24,16 +24,23 @@ func NewAuthService(userRepo domain.UserRepository) AuthService {
 }
 
 // TODO: Login
-func (s *authService) Login(d *dto.LoginRequest) (*dto.Token, *dto.Error) {
+func (s *authService) Login(d *dto.LoginRequest) (*string, *dto.Error) {
 	// Validate DTO
 	if errs := d.Validate(); errs != nil {
 		return nil, dto.NewErrorWithStack(http.StatusBadRequest, errs, "Request body validation error")
 	}
 
-	// u, err := s.userRepo.FindByCredentials(d.Email, d.Password)
-	// token, err := u.GenerateToken()
+	// Find user
+	u, err := s.userRepo.FindByCredentials(d.Email, d.Password)
+	if err != nil {
+		return nil, dto.NewError(http.StatusInternalServerError, err.Error())
+	}
 
-	// return token, nil
+	// Generate access token
+	token, err := u.GenerateToken()
+	if err != nil {
+		return nil, dto.NewError(http.StatusInternalServerError, err.Error())
+	}
 
-	return nil, nil
+	return token, nil
 }

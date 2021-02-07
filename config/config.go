@@ -20,12 +20,17 @@ type (
 		Password string
 		DBName   string
 	}
+
+	JWTConfig struct {
+		Key string
+	}
 )
 
 // Configuration from environment variables
 var (
 	API APIConfig
 	PG  PGConfig
+	JWT JWTConfig
 )
 
 func init() {
@@ -44,6 +49,10 @@ func loadConfig() {
 		Password: os.Getenv("PG_PASSWORD"),
 		DBName:   os.Getenv("PG_DBNAME"),
 	}
+
+	JWT = JWTConfig{
+		Key: os.Getenv("JWT_KEY"),
+	}
 }
 
 // SanityCheck will panic if there is a missing configuration value
@@ -51,6 +60,7 @@ func SanityCheck() {
 	cfg := []interface{}{
 		API,
 		PG,
+		JWT,
 	}
 
 	for _, v := range cfg {

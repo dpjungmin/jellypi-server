@@ -12,6 +12,7 @@ type (
 	// UserRepository defines all data accessing methods
 	UserRepository interface {
 		Create(*User) (*User, *dto.Error)
+		FindByCredentials(string, string) (*User, error)
 	}
 
 	userRepository struct {
@@ -41,6 +42,15 @@ func (r *userRepository) Create(u *User) (*User, *dto.Error) {
 	if err := r.db.Create(&u).Error; err != nil {
 		logger.Error("[DATABASE]::[CREATE_ERROR]", err)
 		return nil, dto.NewError(http.StatusBadRequest, err.Error())
+	}
+
+	return u, nil
+}
+
+// FindByCredentials will find a user with the provided credentials
+func (r *userRepository) FindByCredentials(email, password string) (*User, error) {
+	u := &User{
+		ID: "asdf",
 	}
 
 	return u, nil

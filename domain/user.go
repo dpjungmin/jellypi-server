@@ -4,6 +4,8 @@ import (
 	"errors"
 	"time"
 
+	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/dpjungmin/jellypi-server/config"
 	"github.com/dpjungmin/jellypi-server/utils"
 )
 
@@ -40,4 +42,20 @@ func (e *User) Validate() error {
 	}
 
 	return nil
+}
+
+// GenerateToken will generate an access token
+func (e *User) GenerateToken() (*string, error) {
+	token := jwt.New(jwt.SigningMethodHS256)
+
+	claims := token.Claims.(jwt.MapClaims)
+	claims["user_id"] = e.ID
+	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
+
+	t, err := token.SignedString([]byte(config.JWT.Key))
+	if err != nil {
+		return nil, errors.New("Failed to generate token")
+	}
+
+	return &t, nil
 }

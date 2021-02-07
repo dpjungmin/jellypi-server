@@ -5,10 +5,12 @@ go 1.15
 require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/arsmn/fiber-swagger/v2 v2.3.0
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-openapi/spec v0.20.1 // indirect
 	github.com/go-openapi/swag v0.19.13 // indirect
 	github.com/gofiber/adaptor/v2 v2.1.1
 	github.com/gofiber/fiber/v2 v2.4.1
+	github.com/gofiber/jwt/v2 v2.1.0
 	github.com/klauspost/compress v1.11.7 // indirect
 	github.com/prometheus/client_golang v1.9.0
 	github.com/spf13/viper v1.7.1 // indirect

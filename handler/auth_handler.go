@@ -37,5 +37,5 @@ func (h *authHandler) Login(c *fiber.Ctx) error {
 		return dto.NewErrorResponse(c, err)
 	}
 	// Send response
-	return c.Status(http.StatusOK).JSON(token)
+	return c.Status(http.StatusOK).JSON(dto.Token{AccessToken: *token})
 }

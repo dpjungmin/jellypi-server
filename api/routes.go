@@ -3,6 +3,7 @@ package api
 import (
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	db "github.com/dpjungmin/jellypi-server/database"
+	"github.com/dpjungmin/jellypi-server/middleware"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	// swagger docs
@@ -21,9 +22,11 @@ var (
 	userRepo = d.NewUserRepository(pgClient)
 
 	// Services
+	authSrv = s.NewAuthService(userRepo)
 	userSrv = s.NewUserService(userRepo)
 
 	// Handlers
+	authHandler = h.NewAuthHandler(authSrv)
 	userHandler = h.NewUserHandler(userSrv)
 )
 
@@ -33,13 +36,17 @@ func SetupRoutes(app *fiber.App) {
 	app.Get("/swagger/*", swagger.Handler)
 	app.Get("/metrics", adaptor.HTTPHandler(promhttp.Handler()))
 
+	// api
 	api := app.Group("/api")
-	{
-		users := api.Group("/users")
-		{
-			users.Post("", userHandler.CreateUser)
-		}
-	}
+
+	// auth
+	auth := api.Group("/auth")
+	auth.Get("check", middleware.Protected(), health)
+	auth.Post("login", authHandler.Login)
+
+	// user
+	users := api.Group("/users")
+	users.Post("", userHandler.CreateUser)
 }
 
 func health(c *fiber.Ctx) error {
